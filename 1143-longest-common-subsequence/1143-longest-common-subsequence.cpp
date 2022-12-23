@@ -5,7 +5,7 @@ public:
         // Initializing the DP array
         const int N1 = text1.size();
         const int N2 = text2.size();
-        vector<vector<int>> dp(N1 + 1, vector<int> (N2 + 1,-1));
+        vector<vector<int>> dp(N1 + 1, vector<int> (N2 + 1));
 
         // Filling the DP array
         for (int i = 0; i <= N1; i++) {
