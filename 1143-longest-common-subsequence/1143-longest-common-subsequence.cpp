@@ -1,25 +1,21 @@
 class Solution {
 public:
-    int longestCommonSubsequence(string text1, string text2) {
-
-        // Initializing the DP array
-        const int N1 = text1.size();
-        const int N2 = text2.size();
-        vector<vector<int>> dp(N1 + 1, vector<int> (N2 + 1));
-
-        // Filling the DP array
-        for (int i = 0; i <= N1; i++) {
-            for (int j = 0; j <= N2; j++) {
-                if (i == 0 or j == 0) { dp[i][j] = 0; }
-
-                else {
-
-                    if (text1[i-1] == text2[j-1]) { dp[i][j] = 1 + dp[i - 1][j - 1]; }
-                    else { dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]); }
+    int longestCommonSubsequence(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        for(int i=0;i<=n;i++){
+            for(int j=0;j<=m;j++){
+                if(i==0 or j==0)
+                    dp[i][j]=0;
+                else{
+                    if(s[i-1]==t[j-1])
+                        dp[i][j] = 1 + dp[i-1][j-1];
+                    else
+                        dp[i][j] = max(dp[i-1][j],dp[i][j-1]); 
                 }
             }
-
         }
-        return dp[N1][N2];
+        return dp[n][m];
     }
 };
