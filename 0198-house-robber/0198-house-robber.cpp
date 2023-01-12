@@ -4,21 +4,17 @@ public:
 
         const int n = nums.size();
 
-        if (n == 1) { return nums[0]; }
-        if (n == 2) { return max(nums[0], nums[1]); }
-        if (n == 3) { return max(nums[0] + nums[2], nums[1]); }
-
-        vector<int> dp(n, 0);
-        dp[n - 1] = nums[n - 1];
-        dp[n - 2] = nums[n - 2];
-        dp[n - 3] = nums[n - 3] + nums[n - 1];
-
-        for (int i = n - 4; i >= 0; i--) {
-            dp[i] = nums[i] + max(dp[i + 2], dp[i + 3]);
+        int dp_1 = 0;
+        int dp_2 = 0;
+        int temp = 0;
+        for (auto num:nums){
+            temp = max(num + dp_2, dp_1);
+            dp_2 = dp_1;
+            dp_1 = temp;
+            
         }
-
-        return max(dp[0], dp[1]);
-
+        
+        return dp_1;
 
     }
 };
