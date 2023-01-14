@@ -2,15 +2,16 @@ class Solution:
     def jump(self, nums: List[int]) -> int:
         
         n = len(nums)
-        dp = [0]*n
+        res = 0
+        l = r = 0
+        while r < n-1:
+            temp = r
+            for j in range(l, r+1):
+                r = max(r, j + nums[j])
+            l = temp + 1
+            res += 1    
         
-        for i in range(n-2, -1, -1):
-            mini = float('inf')
-            for j in range(i+1, min(i+nums[i]+1, n)):
-                mini = min(mini, dp[j])
-            dp[i] = 1 + mini
-        
-        return dp[0]
+        return res
             
             
         
