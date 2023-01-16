@@ -1,42 +1,71 @@
-"""
-# Definition for a Node.
-class Node:
-    def __init__(self, val = 0, neighbors = None):
-        self.val = val
-        self.neighbors = neighbors if neighbors is not None else []
-"""
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+class Solution {
+public:
 
-class Solution:
-    def cloneGraph(self, node: 'Node') -> 'Node':
+    Node* cloneGraph(Node* node) {
         
-        if node is None:
-            return None
+        if(node==NULL)
+            return NULL;
+
+        std::unordered_map<int, Node*> node_map;
+        std::vector<Node*> queue = {node};
+        std::vector<Node*> visited = {};
         
-        
-        dico_node = dict()
-        queue = [node]
-        visited = []
-        
-        while queue:
-            curr = queue.pop(0)
+
+        while (queue.size() != 0) {
             
-            if curr not in visited:
-                node_copy = Node(curr.val)
-                dico_node[curr.val] = node_copy
-                queue += curr.neighbors
-                visited.append(curr)
-                
-        # Second round
+            Node* curr = queue[0];
+            
+            
+            if (node_map.find(curr->val) == node_map.end()) {
+                visited.push_back(curr);
+                Node* copy_node = new Node(curr->val);
+                node_map[curr->val] = copy_node;
+                std::vector<Node*> curr_neighbors = curr->neighbors;
+                for (auto orig_node : curr_neighbors) {
+                    queue.push_back(orig_node);
+                }
+            }
+            
+            queue.erase(queue.begin());
+
+        }
+
+        // Second round
+
+        for (auto curr : visited) {
+
+            std::vector<Node*> curr_neighbors = curr->neighbors;
+
+            for (auto neighbor_node : curr_neighbors) {
+                node_map[curr->val]->neighbors.push_back(node_map[neighbor_node->val]);
+            }
+        }
+
         
-        for curr in visited:
-            val = curr.val
-            neighbors = curr.neighbors
- 
-            for neighbor_node in neighbors:
-                if dico_node[val].neighbors is not None:
-                    dico_node[val].neighbors.append(dico_node[neighbor_node.val])
-                else:
-                    dico_node[val].neighbors = [dico_node[neighbor_node.val]]
-                    
-        
-        return dico_node[node.val]
+        return node_map[node->val];
+
+    }
+
+
+
+};
