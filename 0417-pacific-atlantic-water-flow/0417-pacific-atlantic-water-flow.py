@@ -1,115 +1,35 @@
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
         
-        n, m = len(heights), len(heights[0])
-        dico_pacific = {}
-        dico_atlantic = {}
-        dico_flow = {}
-        dico_visited_atlantic = {}
-        dico_visited_pacific = {}
-
         
-        # First pass
-        for i in range(n):
-            for j in range(m):
-                h = heights[i][j]
-                dico_flow[(i,j)] = []
-
-                # Filling the flow
-                if i+1 < n and heights[i+1][j] <= h:
-                    dico_flow[(i,j)] += [(i+1, j)]
-                if i-1 >= 0 and heights[i-1][j] <= h:
-                    dico_flow[(i,j)] += [(i-1, j)]
-                if j+1 < m and heights[i][j+1] <= h:
-                    dico_flow[(i,j)] += [(i, j+1)]
-                if j-1 >= 0 and heights[i][j-1] <= h:
-                    dico_flow[(i,j)] += [(i, j-1)]
-
-                # Near the ocean ?
-                if i==n-1 or j==m-1:
-                    dico_atlantic[(i,j)] = True
-                if i==0 or j==0:
-                    dico_pacific[(i,j)] = True
-
-
-        # Now filling the paciifc and atlantic dicos
-
-        def dfs_pacific(cell):
-
-            if dico_pacific.get(cell) == True:
-                return True
-            if dico_visited_pacific.get(cell) == True:
-                return False
-
-            dico_visited_pacific[cell] = True
-            if dico_flow.get(cell) is None:
-                i, j = cell
-                h = heights[i][j]
-                
-                # Filling the flow
-                if i+1 < n and heights[i+1][j] <= h:
-                    dico_flow[(i,j)] += [(i+1, j)]
-                if i-1 >= 0 and heights[i-1][j] <= h:
-                    dico_flow[(i,j)] += [(i-1, j)]
-                if j+1 < m and heights[i][j+1] <= h:
-                    dico_flow[(i,j)] += [(i, j+1)]
-                if j-1 >= 0 and heights[i][j-1] <= h:
-                    dico_flow[(i,j)] += [(i, j-1)]
-
-                # Near the ocean ?
-                if i==n-1 or j==m-1:
-                    dico_atlantic[(i,j)] = True
-                if i==0 or j==0:
-                    dico_pacific[(i,j)] = True
-            
-            for next_cell in dico_flow[cell]:
-                if dfs_pacific(next_cell):
-                    dico_pacific[cell] = True
-                    return True
-            dico_visited_pacific[cell] = False
-            return False
-
-        def dfs_atlantic(cell):
-            if dico_atlantic.get(cell) == True:
-                return True
-            if dico_visited_atlantic.get(cell) == True:
-                return False
-
-            dico_visited_atlantic[cell] = True
-            if dico_flow.get(cell) is None:
-                i, j = cell
-                h = heights[i][j]
-                
-                # Filling the flow
-                if i+1 < n and heights[i+1][j] <= h:
-                    dico_flow[(i,j)] += [(i+1, j)]
-                if i-1 >= 0 and heights[i-1][j] <= h:
-                    dico_flow[(i,j)] += [(i-1, j)]
-                if j+1 < m and heights[i][j+1] <= h:
-                    dico_flow[(i,j)] += [(i, j+1)]
-                if j-1 >= 0 and heights[i][j-1] <= h:
-                    dico_flow[(i,j)] += [(i, j-1)]
-
-                # Near the ocean ?
-                if i==n-1 or j==m-1:
-                    dico_atlantic[(i,j)] = True
-                if i==0 or j==0:
-                    dico_pacific[(i,j)] = True
-            for next_cell in dico_flow[cell]:
-                if dfs_atlantic(next_cell):
-                    dico_atlantic[cell] = True
-                    return True
-            dico_visited_atlantic[cell] = False
-            return False
-
+        pacific, atlantic = set(), set()
+        n, m = len(heights), len(heights[0])
         ans = []
-        for i in range(n):
-            for j in range(m):
-                cell = (i,j)
-                dico_visited_atlantic = {}
-                dico_visited_pacific = {}
-                if dfs_atlantic(cell) and dfs_pacific(cell):
-                    ans += [[i,j]]
+        
+        def dfs(r, c, curr_height, ocean_set):
+            
+            if r<0 or c<0 or r == n or c == m or heights[r][c] < curr_height or (r,c) in ocean_set:
+                return
+            
+            ocean_set.add((r, c))
+            dfs(r+1, c, heights[r][c], ocean_set)
+            dfs(r, c+1, heights[r][c], ocean_set)
+            dfs(r-1, c, heights[r][c], ocean_set)
+            dfs(r, c-1, heights[r][c], ocean_set)
+            
+        for r in range(n):
+            dfs(r, 0, heights[r][0], pacific)
+            dfs(r, m-1, heights[r][m-1], atlantic)
+        
+        for c in range(m):
+            dfs(n-1, c, heights[n-1][c], atlantic)
+            dfs(0, c, heights[0][c], pacific)
+        
+        for r in range(n):
+            for c in range(m):
+                if (r,c) in pacific and (r,c) in atlantic:
+                    ans.append([r,c])
+        
         return ans
         
         
