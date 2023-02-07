@@ -14,8 +14,8 @@ public:
     ListNode* reverseList(ListNode* head) {
 
 		
-		ListNode* prev = nullptr;
-        ListNode* following;
+		ListNode* prev = NULL;
+        ListNode* following = NULL;
         
 		while (head != nullptr) {
             std::cout<<head->val<<endl;
