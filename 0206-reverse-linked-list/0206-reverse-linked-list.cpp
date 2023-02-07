@@ -14,16 +14,15 @@ public:
     ListNode* reverseList(ListNode* head) {
 
 		
-		ListNode* curr = head;
 		ListNode* prev = nullptr;
         ListNode* following;
         
-		while (curr != nullptr) {
-            std::cout<<curr->val<<endl;
-			following = curr->next;
-            curr->next = prev;
-			prev = curr;
-			curr = following;
+		while (head != nullptr) {
+            std::cout<<head->val<<endl;
+			following = head->next;
+            head->next = prev;
+			prev = head;
+			head = following;
 		}
         
 		return prev;
