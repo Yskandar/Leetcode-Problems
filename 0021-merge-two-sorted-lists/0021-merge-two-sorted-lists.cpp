@@ -44,8 +44,8 @@ public:
             recurse_down(list1->next, list2);
         }
         else{
-            ListNode* temp = new ListNode;
-            temp = list1->next;
+            //ListNode* temp = new ListNode;
+            ListNode* temp = list1->next;
             list1->next = list2;
             recurse_down(list2, temp);
             
