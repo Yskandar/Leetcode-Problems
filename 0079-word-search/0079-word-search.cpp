@@ -1,7 +1,7 @@
 class Solution {
 public:
 
-    bool check_letter(std::vector<std::vector<char>>& board, std::string word, int idx, int i, int j, std::vector<std::vector<bool>>& visited) {
+    bool check_letter(std::vector<std::vector<char>>& board, std::string word, int idx, int i, int j) {
         
 
         
@@ -12,7 +12,7 @@ public:
         //cout << "idx: " << idx << endl;
         //cout << "letter: " << board[i][j] << endl;
         //cout << "visited: " << visited[i][j] << endl;
-        if (board[i][j] != word[idx] || (visited[i][j])) {
+        if (board[i][j] != word[idx]) {
             //cout << "i:" << i << " j:" << j << endl;
             return false;
         }
@@ -21,15 +21,15 @@ public:
             return true;
         }
         
-        
-        visited[i][j] = true;
+        char temp = board[i][j];
+        board[i][j] = '.';
         //cout << "setting the letter: " << board[i][j]<< " to visited: " << visited[i][j] << endl;
 
-        if (check_letter(board, word, idx + 1, i + 1, j, visited)) { return true; };
-        if (check_letter(board, word, idx + 1, i - 1, j, visited)) { return true; };
-        if (check_letter(board, word, idx + 1, i, j + 1, visited)) { return true; };
-        if (check_letter(board, word, idx + 1, i, j - 1, visited)) { return true; };
-        visited[i][j] = false;
+        if (check_letter(board, word, idx + 1, i + 1, j)) { return true; };
+        if (check_letter(board, word, idx + 1, i - 1, j)) { return true; };
+        if (check_letter(board, word, idx + 1, i, j + 1)) { return true; };
+        if (check_letter(board, word, idx + 1, i, j - 1)) { return true; };
+        board[i][j] = temp;
         return false;
 
     }
@@ -43,8 +43,7 @@ public:
 
             for (int j = 0; j < m; j++) {
                 
-                std::vector<std::vector<bool>> visited(n, std::vector<bool>(m, false));
-                if (check_letter(board, word, idx, i, j, visited)) {
+                if (check_letter(board, word, idx, i, j)) {
                     return true;
                 }
 
