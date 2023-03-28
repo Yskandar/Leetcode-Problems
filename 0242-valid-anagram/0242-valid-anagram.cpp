@@ -9,30 +9,16 @@ public:
         std::unordered_map<char, int> t_dict;
         
         
-        for (int i = 0; i<N; i++){
-            
-            if (s_dict.find(s[i]) == s_dict.end()){
-                s_dict[s[i]] = 1;
-            }
-            
-            else{
-                s_dict[s[i]] += 1;
-            }
+        int counts[26] = {0};
         
-            if (t_dict.find(t[i]) == t_dict.end()){
-                t_dict[t[i]] = 1;
-            }
-            else{
-                t_dict[t[i]] += 1;
-            }
-            
-            
+        
+        for (int i = 0; i<N; i++){
+            counts[s[i] -'a'] += 1;
+            counts[t[i] -'a'] -= 1;
         }
         
         for (int i = 0; i<N; i++){
-            if (s_dict[s[i]] != t_dict[s[i]]){
-                return false;
-            }
+            if (counts[s[i]-'a'] != 0){return false;}
             
         }
         
