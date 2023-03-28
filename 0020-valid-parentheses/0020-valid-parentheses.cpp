@@ -11,6 +11,7 @@ public:
             
             if (ans.empty()){ans.push(s[i]);
                                     continue;}
+            if (dico.find(ans.top())==dico.end()){return false;}
             if (dico[ans.top()] == s[i]){ans.pop();}
             else{ans.push(s[i]);}
             
