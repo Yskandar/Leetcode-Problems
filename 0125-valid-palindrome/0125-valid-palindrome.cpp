@@ -3,32 +3,24 @@ public:
 
 	bool isPalindrome(std::string s) {
 
+		std::string s_new;
 
-		int l = 0, r = s.size() - 1;
+		for (int i = 0; i < s.size(); i++) {
 
+			if (std::iswalnum(s[i])) { s_new += std::tolower(s[i]); }
 
-		while (l < r) {
-
-			if (not std::iswalnum(s[l])) { 
-				l += 1;
-                continue;}
-
-			if (not std::iswalnum(s[r])) {
-				r -= 1;
-                continue;
-			}
-
-			if (std::tolower(s[l]) != std::tolower(s[r])) {
-				return false;
-			}
-			l += 1;
-			r -= 1;
 
 
 		}
 
-		return true;
 
+		for (int i = 0; i < std::ceil(s_new.size() / 2); i++) {
+
+			if (s_new[i] != s_new[s_new.size() - 1 - i]) { return false; }
+
+
+		}
+		return true;
 
 	}
 
